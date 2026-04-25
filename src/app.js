@@ -6,6 +6,13 @@ const app = express();
 dotenv.config();
 app.use(cors());
 app.use(express.json());
+
+// Add COOP/COEP headers for Firebase popup auth
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
 // import routes and middleware
 const todoRouter = require("./routers/todo.router");
 const userRouter=require("./routers/user.router")

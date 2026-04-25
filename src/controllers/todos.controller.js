@@ -17,7 +17,20 @@ exports.createTodo=asyncHandler(async(req,res)=>{
 
 // get all todos controller
 exports.getTodos=asyncHandler(async(req,res)=>{
-    const todos=await Todo.find()
+    const { userUID, isCompleted } = req.query;
+    let query = {};
+    
+    // Filter by userUID if provided
+    if (userUID) {
+        query.userUID = userUID;
+    }
+    
+    // Filter by isCompleted if provided
+    if (isCompleted !== undefined) {
+        query.isCompleted = isCompleted === 'true';
+    }
+    
+    const todos = await Todo.find(query);
     res.status(200).json({
         success:true,
         data:todos
